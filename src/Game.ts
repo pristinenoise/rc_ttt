@@ -1,43 +1,37 @@
-import Player from './Player';
+import Player from "./Player";
 
 export default class Game {
-  currentPlayerIndex: number = 0;
+  currentPlayerIndex = 0;
   players: Player[] = [];
-  marks: string[] = ["X", "O"]
-  board: string[] = []
-  gameFinished: boolean = false
-  gameWinner: Player | null = null
+  marks: string[] = ["X", "O"];
+  board: string[] = [];
+  gameFinished = false;
+  gameWinner: Player | null = null;
 
   constructor(player1: Player, player2: Player) {
     this.setStartingPlayer(player1, player2);
     this.initializeBoard();
-
   }
 
   run(): void {
-    while(!this.gameFinished) {
+    while (!this.gameFinished) {
       const currentPlayer = this.players[this.currentPlayerIndex];
       const currentMark = this.marks[this.currentPlayerIndex];
 
-      let successfulMove : boolean = false
+      let successfulMove = false;
       do {
         const moveIndex = currentPlayer.getMove(moves);
         successfulMove = this.makeMove(moveIndex, currentMark);
+      } while (successfulMove == false);
 
-      } while (successfulMove == false)
-       
       this.checkForWin();
-
     }
   }
 
-
-  private checkForWin(): void {
-
-  }
+  private checkForWin(): void {}
 
   private initializeBoard(): void {
-    for (let i = 0 ; i < 9; i ++) {
+    for (let i = 0; i < 9; i++) {
       this.board[i] = "";
     }
   }
@@ -47,7 +41,6 @@ export default class Game {
       this.players = [player1, player2];
       player1.mark = "X";
       player2.mark = "O";
-
     } else {
       this.players = [player2, player1];
       player1.mark = "O";
@@ -57,5 +50,4 @@ export default class Game {
     console.log(`${this.players[0].name} is X and goes first.`);
     console.log(`${this.players[1].name} is O and goes second.`);
   }
-
 }

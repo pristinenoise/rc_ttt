@@ -1,5 +1,5 @@
 export default abstract class Player {
-  name: string
+  name: string;
   mark: string | null = "";
 
   constructor(name: string) {
@@ -7,5 +7,4 @@ export default abstract class Player {
   }
 
   abstract getMove(board: string[]): number;
-
 }
