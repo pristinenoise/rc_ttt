@@ -1,6 +1,7 @@
 import readlineSync from "readline-sync";
 import Player from "./Player";
 
+// Human player that makes moves through the terminal
 export default class HumanPlayer extends Player {
   constructor(name: string) {
     super(name);

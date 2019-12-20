@@ -1,9 +1,14 @@
 import Player from "./Player";
 
+// implements the business logic of the game
+// also does the display logic for the board
+// TODO: remove display logic into a separate class that
+// Game interacts with, probably adds too much complexity for now.
 export default class Game {
-  currentPlayerIndex = 0;
   players: Player[] = [];
+  currentPlayerIndex = 0;
   marks: string[] = ["X", "O"];
+
   board: string[] = [];
   gameFinished = false;
   gameWinner: Player | null = null;
@@ -13,21 +18,22 @@ export default class Game {
     this.initializeBoard();
   }
 
+  // main loop of a game
   run(): void {
     while (!this.gameFinished) {
       this.displayBoard(true);
+
       const currentPlayer: Player = this.players[this.currentPlayerIndex];
       const currentMark: string = this.marks[this.currentPlayerIndex];
 
       let successfulMove = false;
-
       do {
         const moveIndex: number = currentPlayer.getMove(this.board);
         successfulMove = this.makeMove(moveIndex, currentMark);
       } while (successfulMove == false);
 
       this.checkForWin();
-      this.currentPlayerIndex = 1 - this.currentPlayerIndex;
+      this.currentPlayerIndex = 1 - this.currentPlayerIndex; // swap players
     }
   }
 
@@ -45,6 +51,27 @@ export default class Game {
     this.board[index] = mark;
 
     return true;
+  }
+
+  private initializeBoard(): void {
+    for (let i = 0; i < 9; i++) {
+      this.board[i] = " ";
+    }
+  }
+
+  private setStartingPlayer(player1: Player, player2: Player): void {
+    if (Math.random() > 0.5) {
+      this.players = [player1, player2];
+      player1.mark = "X";
+      player2.mark = "O";
+    } else {
+      this.players = [player2, player1];
+      player1.mark = "O";
+      player2.mark = "X";
+    }
+
+    console.log(`${this.players[0].name} is X and goes first.`);
+    console.log(`${this.players[1].name} is O and goes second.`);
   }
 
   private checkForWin(): void {
@@ -144,26 +171,5 @@ export default class Game {
     }
 
     return false;
-  }
-
-  private initializeBoard(): void {
-    for (let i = 0; i < 9; i++) {
-      this.board[i] = " ";
-    }
-  }
-
-  private setStartingPlayer(player1: Player, player2: Player): void {
-    if (Math.random() > 0.5) {
-      this.players = [player1, player2];
-      player1.mark = "X";
-      player2.mark = "O";
-    } else {
-      this.players = [player2, player1];
-      player1.mark = "O";
-      player2.mark = "X";
-    }
-
-    console.log(`${this.players[0].name} is X and goes first.`);
-    console.log(`${this.players[1].name} is O and goes second.`);
   }
 }
